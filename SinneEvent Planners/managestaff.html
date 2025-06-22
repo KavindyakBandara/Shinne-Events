@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Staff Management</title>
+  <style>
+    :root {
+      --primary-black: #121212;
+      --secondary-black: #1e1e1e;
+      --dark-gray: #2d2d2d;
+      --medium-gray: #3d3d3d;
+      --light-gray: #4d4d4d;
+      --gold: #d4af37;
+      --light-gold: #f0e6d2;
+      --white: #f5f5f5;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--primary-black);
+      margin: 0;
+      padding: 40px;
+      color: var(--white);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      background: linear-gradient(135deg, var(--secondary-black) 0%, var(--dark-gray) 100%);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid var(--medium-gray);
+    }
+    
+    h2 {
+      margin-bottom: 25px;
+      color: var(--gold);
+      font-size: 28px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--medium-gray);
+    }
+    
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    
+    input[type="text"] {
+      padding: 12px 15px;
+      width: 300px;
+      border-radius: 6px;
+      border: 1px solid var(--medium-gray);
+      background-color: var(--dark-gray);
+      color: var(--white);
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+    }
+    
+    input[type="text"]::placeholder {
+      color: var(--light-gray);
+    }
+    
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+    }
+    
+    .btn-add {
+      background-color: var(--gold);
+      color: var(--primary-black);
+    }
+    
+    .btn-add:hover {
+      background-color: #e6c34d;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    }
+    
+    .btn-edit {
+      background-color: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      margin-right: 8px;
+    }
+    
+    .btn-edit:hover {
+      background-color: rgba(212, 175, 55, 0.1);
+    }
+    
+    .btn-delete {
+      background-color: transparent;
+      color: #ff6b81;
+      border: 1px solid #ff6b81;
+    }
+    
+    .btn-delete:hover {
+      background-color: rgba(255, 107, 129, 0.1);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--medium-gray);
+    }
+    
+    th {
+      background-color: var(--dark-gray);
+      color: var(--gold);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+    
+    td {
+      color: var(--white);
+      vertical-align: middle;
+    }
+    
+    tr:hover {
+      background-color: rgba(212, 175, 55, 0.03);
+    }
+    
+    .status {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .status-active {
+      background-color: rgba(46, 213, 115, 0.2);
+      color: #2ed573;
+    }
+    
+    .status-onleave {
+      background-color: rgba(255, 165, 0, 0.2);
+      color: #ffa500;
+    }
+    
+    .status-inactive {
+      background-color: rgba(255, 71, 87, 0.2);
+      color: #ff4757;
+    }
+    
+    .role {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      background-color: rgba(148, 85, 211, 0.2);
+      color: #9455d3;
+    }
+    
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 25px;
+      gap: 8px;
+    }
+    
+    .page-btn {
+      padding: 8px 14px;
+      background-color: var(--dark-gray);
+      color: var(--white);
+      border: 1px solid var(--medium-gray);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .page-btn:hover {
+      background-color: var(--medium-gray);
+    }
+    
+    .page-btn.active {
+      background-color: var(--gold);
+      color: var(--primary-black);
+      border-color: var(--gold);
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      
+      .top-bar {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+      }
+      
+      input[type="text"] {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+    <h2>Staff Management</h2>
+
+    <div class="top-bar">
+      <input type="text" placeholder="Search staff by name, ID or role...">
+      <div class="button-group">
+        <a href="staffregistration.html">
+          <button class="btn-add">➕ Add Staff</button>
+        </a>
+        <a href="taskassign.html">
+          <button class="btn-add">➕ Manage Staff</button>
+        </a>
+      </div>
+    </div>
+
+
+    <table>
+      <thead>
+        <tr>
+          <th>Staff ID</th>
+          <th>Full Name</th>
+          <th>Role</th>
+          <th>Contact</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1001</td>
+          <td>Sarah Silva</td>
+          <td><span class="role">Event Manager</span></td>
+          <td>077-1122334</td>
+          <td>sarah.j@events.com</td>
+          <td><span class="status status-active">Active</span></td>
+          <td>
+            <button class="btn-edit">Edit</button>
+            <button class="btn-delete">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>1002</td>
+          <td>Dasun Kumar</td>
+          <td><span class="role">Coordinator</span></td>
+          <td>071-2233445</td>
+          <td>Dasun.w@events.com</td>
+          <td><span class="status status-onleave">On Leave</span></td>
+          <td>
+            <button class="btn-edit">Edit</button>
+            <button class="btn-delete">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>1003</td>
+          <td>Michael Brown</td>
+          <td><span class="role">Vendor Liaison</span></td>
+          <td>076-3344556</td>
+          <td>michael.b@events.com</td>
+          <td><span class="status status-active">Active</span></td>
+          <td>
+            <button class="btn-edit">Edit</button>
+            <button class="btn-delete">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>1004</td>
+          <td>Emily Davis</td>
+          <td><span class="role">Customer Service</span></td>
+          <td>072-4455667</td>
+          <td>emily.d@events.com</td>
+          <td><span class="status status-inactive">Inactive</span></td>
+          <td>
+            <button class="btn-edit">Edit</button>
+            <button class="btn-delete">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button class="page-btn">Previous</button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">Next</button>
+    </div>
+  </div>
+
+</body>
+</html>

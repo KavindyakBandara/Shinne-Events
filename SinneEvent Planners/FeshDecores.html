@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxe Flora - Premium Flower Selection</title>
+    <style>
+        :root {
+            --bg-gray: #f5f5f5;
+            --card-gray: #ffffff;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --fresh: #3a7d44; /* Vibrant green */
+            --artificial: #2c5f7d; /* Deep blue */
+            --mixed: #b8860b; /* Goldenrod */
+            --accent: #8b7355; /* Warm brown */
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        body {
+            background-color: var(--bg-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        
+        .back-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--text-dark);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .back-btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .back-btn i {
+            margin-right: 8px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+            color: var(--text-dark);
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        
+        .flower-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .flower-option {
+            background: var(--card-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .flower-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .flower-image {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* Image placeholders - replace with your actual images */
+        .fresh-image {
+            background-image: url('./Images/natural\ decore.jpg');
+        }
+        
+        .artificial-image {
+            background-image: url('./Images/artidecore.jfif');
+        }
+        
+        .mixed-image {
+            background-image: url('./Images/mixdecore.jfif');
+        }
+        
+        .flower-details {
+            padding: 1.8rem;
+            text-align: center;
+        }
+        
+        .flower-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .fresh .flower-title {
+            color: var(--fresh);
+        }
+        
+        .artificial .flower-title {
+            color: var(--artificial);
+        }
+        
+        .mixed .flower-title {
+            color: var(--mixed);
+        }
+        
+        .flower-description {
+            color: var(--text-light);
+            margin-bottom: 1.8rem;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        
+        .select-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            min-width: 180px;
+        }
+        
+        .fresh .select-btn {
+            background: var(--fresh);
+            color: var(--white);
+        }
+        
+        .artificial .select-btn {
+            background: var(--artificial);
+            color: var(--white);
+        }
+        
+        .mixed .select-btn {
+            background: var(--mixed);
+            color: var(--white);
+        }
+        
+        .select-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .flower-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .flower-details {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="nav-buttons">
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+        
+        <header>
+            <h1>Select Your Florals</h1>
+            <p class="subtitle">Choose the perfect blooms for your occasion</p>
+        </header>
+        
+        <div class="flower-types">
+            <!-- Fresh Flowers Option -->
+            <div class="flower-option fresh">
+                <div class="flower-image fresh-image"></div>
+                <div class="flower-details">
+                    <h3 class="flower-title">Fresh Flowers</h3>
+                    <p class="flower-description">
+                        Naturally beautiful with delicate fragrance. Perfect for weddings and special occasions that call for authentic floral elegance.
+                    </p>
+                    <a href="venderdecore.html" class="select-btn">View Selection</a>
+                </div>
+            </div>
+            
+            <!-- Artificial Flowers Option -->
+            <div class="flower-option artificial">
+                <div class="flower-image artificial-image"></div>
+                <div class="flower-details">
+                    <h3 class="flower-title">Artificial Flowers</h3>
+                    <p class="flower-description">
+                        Long-lasting beauty that never fades. Ideal for permanent displays, allergy-free environments, and budget-conscious events.
+                    </p>
+                    <a href="venderdecore.html" class="select-btn">View Selection</a>
+                </div>
+            </div>
+            
+            <!-- Mixed Flowers Option -->
+            <div class="flower-option mixed">
+                <div class="flower-image mixed-image"></div>
+                <div class="flower-details">
+                    <h3 class="flower-title">Mixed Arrangements</h3>
+                    <p class="flower-description">
+                        The best of both worlds. Fresh focal points with lasting artificial elements for a balanced, cost-effective floral solution.
+                    </p>
+                    <a href="venderdecore.html" class="select-btn">View Selection</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

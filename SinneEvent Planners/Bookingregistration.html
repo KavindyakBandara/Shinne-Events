@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shinne Events - Enhanced Planning Dashboard</title>
+    <style>
+        :root {
+            --black: #121212;
+            --dark-gray: #2a2a2a;
+            --medium-gray: #3d3d3d;
+            --light-gray: #e0e0e0;
+            --gold: #d4af37;
+            --gold-light: #f0e6c5;
+            --budget-basic: #4CAF50;
+            --budget-standard: #2196F3;
+            --budget-premium: #9C27B0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-gray);
+            color: var(--black);
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+       
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background-color: var(--light-gray);
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .header h1 {
+            color: var(--black);
+            font-size: 1.8rem;
+        }
+        
+        .header h1 span {
+            color: var(--gold);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            font-weight: bold;
+        }
+        
+        /* Budget Selector */
+        .budget-selector {
+            display: flex;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .budget-option {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .budget-option input {
+            display: none;
+        }
+        
+        .budget-option label {
+            display: block;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .budget-basic {
+            background-color: rgba(76, 175, 80, 0.1);
+            border: 2px solid var(--budget-basic);
+        }
+        
+        .budget-standard {
+            background-color: rgba(33, 150, 243, 0.1);
+            border: 2px solid var(--budget-standard);
+        }
+        
+        .budget-premium {
+            background-color: rgba(156, 39, 176, 0.1);
+            border: 2px solid var(--budget-premium);
+        }
+        
+        .budget-option input:checked + label {
+            color: white;
+        }
+        
+        .budget-basic input:checked + label {
+            background-color: var(--budget-basic);
+        }
+        
+        .budget-standard input:checked + label {
+            background-color: var(--budget-standard);
+        }
+        
+        .budget-premium input:checked + label {
+            background-color: var(--budget-premium);
+        }
+        
+        /* Service Selection */
+        .service-category {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .service-header {
+            background-color: var(--dark-gray);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .service-header h3 {
+            color: var(--gold);
+            margin: 0;
+        }
+        
+        .service-content {
+            padding: 20px;
+            display: none;
+        }
+        
+        .service-content.active {
+            display: block;
+        }
+        
+        .budget-tier {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ccc;
+        }
+        
+        .budget-tier:last-child {
+            border-bottom: none;
+        }
+        
+        .tier-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+        }
+        
+        .basic-tier .tier-header {
+            border-color: var(--budget-basic);
+            color: var(--budget-basic);
+        }
+        
+        .standard-tier .tier-header {
+            border-color: var(--budget-standard);
+            color: var(--budget-standard);
+        }
+        
+        .premium-tier .tier-header {
+            border-color: var(--budget-premium);
+            color: var(--budget-premium);
+        }
+        
+        .tier-title {
+            font-weight: 600;
+            margin-right: 15px;
+        }
+        
+        .tier-price {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .vendor-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .vendor-card {
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .vendor-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .vendor-card.selected {
+            border: 2px solid var(--gold);
+            background-color: var(--gold-light);
+        }
+        
+        .vendor-card input {
+            display: none;
+        }
+        
+        .vendor-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark-gray);
+        }
+        
+        .vendor-details {
+            font-size: 0.9em;
+            color: var(--medium-gray);
+            margin-bottom: 10px;
+        }
+        
+        .vendor-rating {
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+        
+        .vendor-pricing {
+            font-size: 0.85em;
+            color: var(--medium-gray);
+        }
+        
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--gold);
+            color: var(--black);
+        }
+        
+        .btn-primary:hover {
+            background-color: #c19b2c;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--medium-gray);
+            color: var(--medium-gray);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--medium-gray);
+            color: white;
+        }
+        
+        /* Alert */
+        .alert {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+           
+            
+            .budget-selector {
+                flex-direction: column;
+            }
+            
+            .vendor-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Plan Your <span>Event</span></h1>
+                <div class="user-info">
+                    <span>John Doe</span>
+                    <div class="user-avatar">JD</div>
+                </div>
+            </div>
+            
+            <div id="alertBox" class="alert">
+                <i class="fas fa-check-circle"></i> <span id="alertMessage"></span>
+            </div>
+            
+            <div class="event-form-container">
+                <form id="eventPlanningForm">
+                    <h2 class="form-section-title">Select Your Budget Tier</h2>
+                    <div class="budget-selector">
+                        <div class="budget-option budget-basic">
+                            <input type="radio" id="budget_basic" name="budget_tier" value="basic" checked>
+                            <label for="budget_basic">Basic</label>
+                        </div>
+                        <div class="budget-option budget-standard">
+                            <input type="radio" id="budget_standard" name="budget_tier" value="standard">
+                            <label for="budget_standard">Standard</label>
+                        </div>
+                        <div class="budget-option budget-premium">
+                            <input type="radio" id="budget_premium" name="budget_tier" value="premium">
+                            <label for="budget_premium">Premium</label>
+                        </div>
+                    </div>
+                    
+                    <h2 class="form-section-title">Select Services & Vendors</h2>
+                    
+                    <!-- Venue Service -->
+                    <!-- Venue Service -->
+<div class="service-category">
+    <div class="service-header" onclick="toggleService('venue')">
+        <h3><i class="fas fa-map-marker-alt"></i> Venue</h3>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="service-content" id="venue-content">
+        <div class="budget-tier basic-tier">
+            <div class="tier-header">
+                <span class="tier-title">Basic Venues</span>
+                <span class="tier-price">(LKR 360,000)</span>
+            </div>
+            <div class="vendor-options">
+                <label class="vendor-card">
+                    <input type="radio" name="venue_vendor" value="community_hall">
+                    <div class="vendor-name">Community Event Hall</div>
+                    <div class="vendor-details">Capacity: 100-150 guests</div>
+                    <div class="vendor-rating">★★★★☆ (4.2/5)</div>
+                    <div class="vendor-pricing">LKR 144,000</div>
+                </label>
+                <label class="vendor-card">
+                    <input type="radio" name="venue_vendor" value="garden_lawns">
+                    <div class="vendor-name">Garden Lawns</div>
+                    <div class="vendor-details">Outdoor space with basic amenities</div>
+                    <div class="vendor-rating">★★★☆☆ (3.8/5)</div>
+                    <div class="vendor-pricing">LKR 180,000</div>
+                </label>
+            </div>
+        </div>
+        
+        <div class="budget-tier standard-tier">
+            <div class="tier-header">
+                <span class="tier-title">Standard Venues</span>
+                <span class="tier-price">(LKR 360,000 - LKR 840,000)</span>
+            </div>
+            <div class="vendor-options">
+                <label class="vendor-card">
+                    <input type="radio" name="venue_vendor" value="grand_hotel">
+                    <div class="vendor-name">Grand Hotel Ballroom</div>
+                    <div class="vendor-details">Elegant indoor space with full service</div>
+                    <div class="vendor-rating">★★★★☆ (4.5/5)</div>
+                    <div class="vendor-pricing">LKR 420,000</div>
+                </label>
+                <label class="vendor-card">
+                    <input type="radio" name="venue_vendor" value="vineyard_estate">
+                    <div class="vendor-name">Vineyard Estate</div>
+                    <div class="vendor-details">Scenic outdoor venue with vineyard views</div>
+                    <div class="vendor-rating">★★★★★ (4.8/5)</div>
+                    <div class="vendor-pricing">LKR 600,000</div>
+                </label>
+            </div>
+        </div>
+        
+        <div class="budget-tier premium-tier">
+            <div class="tier-header">
+                <span class="tier-title">Premium Venues</span>
+                <span class="tier-price">(LKR 840,000+)</span>
+            </div>
+            <div class="vendor-options">
+                <label class="vendor-card">
+                    <input type="radio" name="venue_vendor" value="luxury_resort">
+                    <div class="vendor-name">Luxury Beach Resort</div>
+                    <div class="vendor-details">Exclusive beachfront property</div>
+                    <div class="vendor-rating">★★★★★ (4.9/5)</div>
+                    <div class="vendor-pricing">LKR 960,000</div>
+                </label>
+                <label class="vendor-card">
+                    <input type="radio" name="venue_vendor" value="historic_mansion">
+                    <div class="vendor-name">Historic Grand Mansion</div>
+                    <div class="vendor-details">Luxurious historic property</div>
+                    <div class="vendor-rating">★★★★★ (5.0/5)</div>
+                    <div class="vendor-pricing">LKR 1,200,000</div>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Custom Choice Button -->
+        <div class="custom-choice">
+            <button class="custom-btn" onclick="showCustomOption('venue')">
+                <i class="fas fa-plus-circle"></i> Add Custom Venue
+            </button>
+            <div class="custom-option" id="venue-custom" style="display:none;">
+                <input type="text" placeholder="Venue Name" class="custom-input">
+                <input type="number" placeholder="Price in LKR" class="custom-input">
+                <textarea placeholder="Venue Details" class="custom-textarea"></textarea>
+                <button class="save-btn" onclick="saveCustomOption('venue')">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+                    
+                    <!-- Catering Service -->
+                    <div class="service-category">
+                        <div class="service-header" onclick="toggleService('catering')">
+                            <h3><i class="fas fa-utensils"></i> Catering</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="service-content" id="catering-content">
+                            <div class="budget-tier basic-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Basic Catering</span>
+                                    <span class="tier-price">($15-$25 per person)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="catering_vendor" value="local_bites">
+                                        <div class="vendor-name">Local Bites Catering</div>
+                                        <div class="vendor-details">Buffet style with 3 main options</div>
+                                        <div class="vendor-rating">★★★☆☆ (3.7/5)</div>
+                                        <div class="vendor-pricing">$15/person</div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="catering_vendor" value="family_kitchen">
+                                        <div class="vendor-name">Family Kitchen</div>
+                                        <div class="vendor-details">Homestyle meals with vegetarian option</div>
+                                        <div class="vendor-rating">★★★★☆ (4.1/5)</div>
+                                        <div class="vendor-pricing">$20/person</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-tier standard-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Standard Catering</span>
+                                    <span class="tier-price">($25-$50 per person)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="catering_vendor" value="gourmet_chefs">
+                                        <div class="vendor-name">Gourmet Chefs Inc.</div>
+                                        <div class="vendor-details">Plated meals with 4-course options</div>
+                                        <div class="vendor-rating">★★★★☆ (4.5/5)</div>
+                                        <div class="vendor-pricing">$35/person</div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="catering_vendor" value="fusion_cuisine">
+                                        <div class="vendor-name">Fusion Cuisine</div>
+                                        <div class="vendor-details">International menu with premium buffet</div>
+                                        <div class="vendor-rating">★★★★☆ (4.3/5)</div>
+                                        <div class="vendor-pricing">$45/person</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-tier premium-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Premium Catering</span>
+                                    <span class="tier-price">($50+ per person)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="catering_vendor" value="celebrity_cuisine">
+                                        <div class="vendor-name">Celebrity Cuisine</div>
+                                        <div class="vendor-details">Michelin-star inspired menu</div>
+                                        <div class="vendor-rating">★★★★★ (4.9/5)</div>
+                                        <div class="vendor-pricing">$75/person</div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="catering_vendor" value="luxury_dining">
+                                        <div class="vendor-name">Luxury Dining Experience</div>
+                                        <div class="vendor-details">Custom menu with chef stations</div>
+                                        <div class="vendor-rating">★★★★★ (5.0/5)</div>
+                                        <div class="vendor-pricing">$100+/person</div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decoration Service -->
+                    <div class="service-category">
+                        <div class="service-header" onclick="toggleService('decoration')">
+                            <h3><i class="fas fa-paint-brush"></i> Decoration</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="service-content" id="decoration-content">
+                            <div class="budget-tier basic-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Basic Decor</span>
+                                    <span class="tier-price">($500-$1,500)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="decoration_vendor" value="simple_elegance">
+                                        <div class="vendor-name">Simple Elegance</div>
+                                        <div class="vendor-details">Basic table settings and minimal decor</div>
+                                        <div class="vendor-rating">★★★☆☆ (3.5/5)</div>
+                                        <div class="vendor-pricing">From $600</div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="decoration_vendor" value="diy_decor">
+                                        <div class="vendor-name">DIY Decor Specialists</div>
+                                        <div class="vendor-details">Guidance for DIY decorations</div>
+                                        <div class="vendor-rating">★★★☆☆ (3.9/5)</div>
+                                        <div class="vendor-pricing">From $800</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-tier standard-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Standard Decor</span>
+                                    <span class="tier-price">($1,500-$3,500)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="decoration_vendor" value="bloom_creations">
+                                        <div class="vendor-name">Bloom Creations</div>
+                                        <div class="vendor-details">Floral centerpieces and basic lighting</div>
+                                        <div class="vendor-rating">★★★★☆ (4.3/5)</div>
+                                        <div class="vendor-pricing">From $2,000</div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="decoration_vendor" value="elegant_events">
+                                        <div class="vendor-name">Elegant Events Decor</div>
+                                        <div class="vendor-details">Themed decor with moderate floral</div>
+                                        <div class="vendor-rating">★★★★☆ (4.2/5)</div>
+                                        <div class="vendor-pricing">From $2,500</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-tier premium-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Premium Decor</span>
+                                    <span class="tier-price">($3,500+)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="decoration_vendor" value="luxe_designs">
+                                        <div class="vendor-name">Luxe Designs</div>
+                                        <div class="vendor-details">Full floral installations and custom decor</div>
+                                        <div class="vendor-rating">★★★★★ (4.8/5)</div>
+                                        <div class="vendor-pricing">From $4,000</div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="decoration_vendor" value="signature_events">
+                                        <div class="vendor-name">Signature Events</div>
+                                        <div class="vendor-details">Complete venue transformation</div>
+                                        <div class="vendor-rating">★★★★★ (4.9/5)</div>
+                                        <div class="vendor-pricing">From $5,000</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Flower Type Selection -->
+                            <div class="form-group" style="margin-top: 30px;">
+                                <label>Flower Arrangement Type</label>
+                                <div style="display: flex; gap: 15px; margin-top: 10px;">
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="radio" name="flower_type" value="fresh" checked style="margin-right: 5px;">
+                                        Fresh Flowers
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="radio" name="flower_type" value="artificial" style="margin-right: 5px;">
+                                        Artificial Flowers
+                                    </label>
+                                    <label style="display: flex; align-items: center;">
+                                        <input type="radio" name="flower_type" value="mixed" style="margin-right: 5px;">
+                                        Mixed Arrangement
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Photography Service -->
+                    <div class="service-category">
+                        <div class="service-header" onclick="toggleService('photography')">
+                            <h3><i class="fas fa-camera"></i> Photography/Videography</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="service-content" id="photography-content">
+                            <div class="budget-tier basic-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Basic Photography</span>
+                                    <span class="tier-price">($800-$1,500)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="photo_vendor" value="snap_happy">
+                                        <div class="vendor-name">Snap Happy Photography</div>
+                                        <div class="vendor-details">4 hours coverage, 100+ edited photos</div>
+                                        <div class="vendor-rating">★★★☆☆ (3.8/5)</div>
+                                        <div class="vendor-pricing">From $900</div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="photo_vendor" value="memory_makers">
+                                        <div class="vendor-name">Memory Makers</div>
+                                        <div class="vendor-details">5 hours coverage, online gallery</div>
+                                        <div class="vendor-rating">★★★★☆ (4.0/5)</div>
+                                        <div class="vendor-pricing">From $1,200</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-tier standard-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Standard Photography</span>
+                                    <span class="tier-price">($1,500-$3,000)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="photo_vendor" value="elegant_frames">
+                                        <div class="vendor-name">Elegant Frames</div>
+                                        <div class="vendor-details">8 hours coverage, 2 photographers</div>
+                                        <div class="vendor-rating">★★★★☆ (4.5/5)</div>
+                                        <div class="vendor-pricing">From $2,000</div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="photo_vendor" value="timeless_images">
+                                        <div class="vendor-name">Timeless Images</div>
+                                        <div class="vendor-details">Full day coverage, premium album</div>
+                                        <div class="vendor-rating">★★★★☆ (4.6/5)</div>
+                                        <div class="vendor-pricing">From $2,500</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-tier premium-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Premium Photography</span>
+                                    <span class="tier-price">($3,000+)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="photo_vendor" value="luxe_shots">
+                                        <div class="vendor-name">Luxe Shots Studio</div>
+                                        <div class="vendor-details">Full day with 3 photographers, cinematic video</div>
+                                        <div class="vendor-rating">★★★★★ (4.9/5)</div>
+                                        <div class="vendor-pricing">From $3,500</div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="photo_vendor" value="celebrity_photography">
+                                        <div class="vendor-name">Celebrity Photography</div>
+                                        <div class="vendor-details">Award-winning photographer, full team</div>
+                                        <div class="vendor-rating">★★★★★ (5.0/5)</div>
+                                        <div class="vendor-pricing">From $5,000</div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="special_requests">Special Requests</label>
+                        <textarea id="special_requests" name="special_requests" rows="4" placeholder="Any additional requirements or notes for your vendors"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline">Save Draft</button>
+                        <button type="submit" class="btn btn-primary">Submit Event Plan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle service sections
+        function toggleService(serviceId) {
+            const content = document.getElementById(`${serviceId}-content`);
+            content.classList.toggle('active');
+            
+            // Toggle icon
+            const icon = content.previousElementSibling.querySelector('.fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        }
+        
+        // Highlight selected vendor cards
+        document.querySelectorAll('.vendor-card input').forEach(input => {
+            input.addEventListener('change', function() {
+                // Remove selected class from all cards in this group
+                document.querySelectorAll(`.vendor-card input[name="${this.name}"]`).forEach(radio => {
+                    radio.parentElement.classList.remove('selected');
+                });
+                
+                // Add selected class to current card
+                if (this.checked) {
+                    this.parentElement.classList.add('selected');
+                }
+            });
+        });
+        
+        // Show/hide tiers based on selected budget
+        function updateVisibleTiers() {
+            const selectedBudget = document.querySelector('input[name="budget_tier"]:checked').value;
+            
+            // Hide all tiers first
+            document.querySelectorAll('.budget-tier').forEach(tier => {
+                tier.style.display = 'none';
+            });
+            
+            // Show basic tier for basic budget
+            if (selectedBudget === 'basic') {
+                document.querySelectorAll('.basic-tier').forEach(tier => {
+                    tier.style.display = 'block';
+                });
+            }
+            // Show basic and standard for standard budget
+            else if (selectedBudget === 'standard') {
+                document.querySelectorAll('.basic-tier, .standard-tier').forEach(tier => {
+                    tier.style.display = 'block';
+                });
+            }
+            // Show all tiers for premium budget
+            else if (selectedBudget === 'premium') {
+                document.querySelectorAll('.budget-tier').forEach(tier => {
+                    tier.style.display = 'block';
+                });
+            }
+        }
+        
+        // Initialize budget tier visibility
+        updateVisibleTiers();
+        
+        // Update tiers when budget changes
+        document.querySelectorAll('input[name="budget_tier"]').forEach(radio => {
+            radio.addEventListener('change', updateVisibleTiers);
+        });
+        
+        // Form submission
+        document.getElementById('eventPlanningForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate at least one vendor is selected per active service
+            let isValid = true;
+            document.querySelectorAll('.service-content.active').forEach(content => {
+                const serviceName = content.id.replace('-content', '');
+                const selectedVendor = document.querySelector(`input[name="${serviceName}_vendor"]:checked`);
+                
+                if (!selectedVendor) {
+                    isValid = false;
+                    // Highlight the service header to show error
+                    content.previousElementSibling.style.backgroundColor = '#ffebee';
+                } else {
+                    content.previousElementSibling.style.backgroundColor = '';
+                }
+            });
+            
+            if (isValid) {
+                showAlert('Your event plan has been submitted successfully!', 'success');
+                
+                // In a real app, this would submit to your backend
+                console.log('Form data:', new FormData(this));
+            } else {
+                showAlert('Please select at least one vendor for each service you expanded', 'error');
+            }
+        });
+        
+        // Show alert message
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            alertBox.className = `alert alert-${type}`;
+            alertMessage.textContent = message;
+            alertBox.style.display = 'flex';
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Initialize any expanded service sections
+        document.querySelectorAll('.service-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('.fa-chevron-down, .fa-chevron-up');
+                
+                if (content.classList.contains('active')) {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                } else {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

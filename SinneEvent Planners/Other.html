@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shinne EventPlanners | Premium Event Dashboard</title>
+    <style>
+        :root {
+            --primary: #6a1b9a;
+            --primary-light: #9c4dcc;
+            --secondary: #ffab00;
+            --dark: #121212;
+            --medium: #2d2d2d;
+            --light: #f5f5f5;
+            --white: #ffffff;
+            --success: #00c853;
+            --error: #d50000;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1a1a 100%);
+            color: var(--white);
+            padding: 2rem 0;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .sidebar-header {
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .sidebar-header h2 {
+            color: var(--secondary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-header p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 2rem;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            position: relative;
+        }
+        
+        .sidebar-menu a:hover, 
+        .sidebar-menu a.active {
+            color: var(--white);
+            background: rgba(255, 171, 0, 0.1);
+        }
+        
+        .sidebar-menu a.active {
+            font-weight: 500;
+        }
+        
+        .sidebar-menu a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--secondary);
+            transform: scaleY(0);
+            transition: var(--transition);
+            transform-origin: bottom;
+        }
+        
+        .sidebar-menu a:hover::before,
+        .sidebar-menu a.active::before {
+            transform: scaleY(1);
+        }
+        
+        .sidebar-menu i {
+            margin-right: 1rem;
+            width: 24px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            flex: 1;
+            padding: 2.5rem;
+            background-color: var(--light);
+            position: relative;
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .header h1 {
+            color: var(--dark);
+            font-size: 2rem;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .header h1 span {
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -0.75rem;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary) 0%, #ffd600 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(255, 171, 0, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 171, 0, 0.4);
+        }
+        
+        /* ========== BUDGET SELECTOR ========== */
+        .budget-selector {
+            display: flex;
+            margin-bottom: 2.5rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .budget-option {
+            flex: 1;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .budget-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .budget-option:hover::before {
+            opacity: 1;
+        }
+        
+        .budget-option input {
+            display: none;
+        }
+        
+        .budget-option label {
+            display: block;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 2;
+            transition: var(--transition);
+        }
+        
+        .budget-option .budget-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.75rem;
+            display: block;
+            transition: var(--transition);
+        }
+        
+        .budget-basic {
+            background-color: rgba(0, 200, 83, 0.08);
+            border: 1px solid rgba(0, 200, 83, 0.3);
+        }
+        
+        .budget-standard {
+            background-color: rgba(33, 150, 243, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.3);
+        }
+        
+        .budget-premium {
+            background-color: rgba(156, 39, 176, 0.08);
+            border: 1px solid rgba(156, 39, 176, 0.3);
+        }
+        
+        .budget-option input:checked + label {
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+        
+        .budget-option input:checked + label .budget-icon {
+            transform: scale(1.1);
+        }
+        
+        .budget-basic input:checked + label {
+            background-color: var(--success);
+        }
+        
+        .budget-standard input:checked + label {
+            background-color: #2196F3;
+        }
+        
+        .budget-premium input:checked + label {
+            background-color: var(--primary);
+        }
+        
+        /* ========== SERVICE SELECTION ========== */
+        .service-category {
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .service-category:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+        }
+        
+        .service-header {
+            background: linear-gradient(135deg, var(--medium) 0%, #333 100%);
+            color: var(--white);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .service-header:hover {
+            background: linear-gradient(135deg, #333 0%, #444 100%);
+        }
+        
+        .service-header h3 {
+            color: var(--secondary);
+            margin: 0;
+            font-weight: 500;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .service-header h3 i {
+            margin-right: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .service-header .toggle-icon {
+            transition: var(--transition);
+        }
+        
+        .service-content {
+            padding: 0;
+            display: none;
+            background: var(--white);
+        }
+        
+        .service-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .budget-tier {
+            padding: 1.5rem;
+            margin-bottom: 0;
+            border-bottom: 1px dashed rgba(0,0,0,0.1);
+        }
+        
+        .budget-tier:last-child {
+            border-bottom: none;
+        }
+        
+        .tier-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid;
+            position: relative;
+        }
+        
+        .tier-header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: currentColor;
+        }
+        
+        .basic-tier .tier-header {
+            border-color: rgba(0, 200, 83, 0.3);
+            color: var(--success);
+        }
+        
+        .standard-tier .tier-header {
+            border-color: rgba(33, 150, 243, 0.3);
+            color: #2196F3;
+        }
+        
+        .premium-tier .tier-header {
+            border-color: rgba(106, 27, 154, 0.3);
+            color: var(--primary);
+        }
+        
+        .tier-title {
+            font-weight: 600;
+            margin-right: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .tier-price {
+            font-size: 0.9em;
+            opacity: 0.8;
+            font-style: italic;
+        }
+        
+        .vendor-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+        
+        .vendor-card {
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .vendor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--secondary);
+            transition: var(--transition);
+        }
+        
+        .vendor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: rgba(255, 171, 0, 0.5);
+        }
+        
+        .vendor-card:hover::before {
+            height: 100%;
+        }
+        
+        .vendor-card.selected {
+            border: 2px solid var(--secondary);
+            background-color: rgba(255, 171, 0, 0.05);
+            box-shadow: 0 5px 15px rgba(255, 171, 0, 0.15);
+        }
+        
+        .vendor-card.selected::before {
+            height: 100%;
+        }
+        
+        .vendor-card input {
+            display: none;
+        }
+        
+        .vendor-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .vendor-name i {
+            margin-left: auto;
+            color: var(--secondary);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .vendor-card.selected .vendor-name i {
+            opacity: 1;
+        }
+        
+        .vendor-details {
+            font-size: 0.9rem;
+            color: var(--medium);
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+        
+        .vendor-rating {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .vendor-pricing {
+            font-size: 0.9rem;
+            color: var(--medium);
+            font-weight: 500;
+        }
+        
+        .vendor-pricing strong {
+            color: var(--dark);
+            font-size: 1.1em;
+        }
+        
+        /* ========== ADD VENDOR BUTTON ========== */
+        .add-vendor-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border: 2px dashed rgba(0,0,0,0.2);
+            border-radius: 8px;
+            background: rgba(0,0,0,0.02);
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--medium);
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+        
+        .add-vendor-btn:hover {
+            border-color: var(--secondary);
+            background: rgba(255, 171, 0, 0.05);
+            color: var(--secondary);
+        }
+        
+        .add-vendor-btn i {
+            margin-right: 0.5rem;
+        }
+        
+        /* ========== STYLE PREFERENCES ========== */
+        .style-preferences {
+            margin-top: 1.5rem;
+        }
+        
+        .style-preferences label {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .style-preferences label:hover {
+            background: rgba(0,0,0,0.03);
+        }
+        
+        .style-preferences input {
+            margin-right: 0.75rem;
+        }
+        
+        /* ========== FORM ELEMENTS ========== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            background: var(--white);
+            font-size: 0.95rem;
+            transition: var(--transition);
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(255, 171, 0, 0.2);
+        }
+        
+        /* ========== FORM ACTIONS ========== */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0,0,0,0.08);
+        }
+        
+        .btn {
+            padding: 0.8rem 1.75rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+        }
+        
+        .btn i {
+            margin-right: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary) 0%, #ffc400 100%);
+            color: var(--dark);
+            box-shadow: 0 4px 15px rgba(255, 171, 0, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 171, 0, 0.4);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid rgba(0,0,0,0.2);
+            color: var(--medium);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(0,0,0,0.02);
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+        
+        /* ========== ALERT ========== */
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+            align-items: center;
+            box-shadow: var(--shadow);
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .alert i {
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+        
+        .alert-success {
+            background-color: #e8f5e9;
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+        
+        .alert-error {
+            background-color: #ffebee;
+            color: var(--error);
+            border-left: 4px solid var(--error);
+        }
+        
+        /* ========== MODAL ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+        
+        .modal-content {
+            background: var(--white);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+        
+        .modal-header {
+            padding: 1.25rem;
+            background: linear-gradient(135deg, var(--medium) 0%, #333 100%);
+            color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            color: var(--secondary);
+            margin: 0;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1200px) {
+            .vendor-options {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .main-content {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .budget-selector {
+                flex-direction: column;
+            }
+            
+            .vendor-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .header h1::after {
+                bottom: -1rem;
+            }
+            
+            .main-content {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Shinne EventPlanners</h2>
+                <p>Premium Event Planning</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active"><i class="fas fa-calendar-plus"></i> New Event</a></li>
+                <li><a href="#"><i class="fas fa-calendar-alt"></i> My Events</a></li>
+                <li><a href="#"><i class="fas fa-envelope"></i> Messages</a></li>
+                <li><a href="#"><i class="fas fa-file-invoice-dollar"></i> Payments</a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i> Reports</a></li>
+                <li><a href="#"><i class="fas fa-user-cog"></i> Account Settings</a></li>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Plan Your <span>Dream Event</span></h1>
+                <div class="user-info">
+                    <span>John Doe</span>
+                    <div class="user-avatar">JD</div>
+                </div>
+            </div>
+            
+            <div id="alertBox" class="alert">
+                <i class="fas fa-check-circle"></i> <span id="alertMessage"></span>
+            </div>
+            
+            <div class="event-form-container">
+                <form id="eventPlanningForm">
+                    <h2 class="form-section-title">Select Your Budget Tier</h2>
+                    <div class="budget-selector">
+                        <div class="budget-option budget-basic">
+                            <input type="radio" id="budget_basic" name="budget_tier" value="basic" checked>
+                            <label for="budget_basic">
+                                <i class="fas fa-leaf budget-icon"></i>
+                                Basic
+                                <small>Economical options</small>
+                            </label>
+                        </div>
+                        <div class="budget-option budget-standard">
+                            <input type="radio" id="budget_standard" name="budget_tier" value="standard">
+                            <label for="budget_standard">
+                                <i class="fas fa-star budget-icon"></i>
+                                Standard
+                                <small>Balanced quality</small>
+                            </label>
+                        </div>
+                        <div class="budget-option budget-premium">
+                            <input type="radio" id="budget_premium" name="budget_tier" value="premium">
+                            <label for="budget_premium">
+                                <i class="fas fa-crown budget-icon"></i>
+                                Premium
+                                <small>Luxury experience</small>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <h2 class="form-section-title">Select Services & Vendors</h2>
+                    
+                    <!-- Venue Service -->
+                    <div class="service-category">
+                        <div class="service-header" onclick="toggleService('venue')">
+                            <h3><i class="fas fa-map-marker-alt"></i> Venue</h3>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </div>
+                        <div class="service-content" id="venue-content">
+                            <div class="budget-tier basic-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Basic Venues</span>
+                                    <span class="tier-price">($1,000 - $3,000)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="venue_vendor" value="community_hall">
+                                        <div class="vendor-name">Community Event Hall <i class="fas fa-check-circle"></i></div>
+                                        <div class="vendor-details">Capacity: 100-150 guests, basic amenities, parking available</div>
+                                        <div class="vendor-rating">★★★★☆ (4.2/5)</div>
+                                        <div class="vendor-pricing">Starting at <strong>$1,200</strong></div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="venue_vendor" value="garden_lawns">
+                                        <div class="vendor-name">Garden Lawns <i class="fas fa-check-circle"></i></div>
+                                        <div class="vendor-details">Outdoor space with basic amenities, tent options available</div>
+                                        <div class="vendor-rating">★★★☆☆ (3.8/5)</div>
+                                        <div class="vendor-pricing">Starting at <strong>$1,500</strong></div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-tier standard-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Standard Venues</span>
+                                    <span class="tier-price">($3,000 - $7,000)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="venue_vendor" value="grand_hotel">
+                                        <div class="vendor-name">Grand Hotel Ballroom <i class="fas fa-check-circle"></i></div>
+                                        <div class="vendor-details">Elegant indoor space with full service, catering options</div>
+                                        <div class="vendor-rating">★★★★☆ (4.5/5)</div>
+                                        <div class="vendor-pricing">Starting at <strong>$3,500</strong></div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="venue_vendor" value="vineyard_estate">
+                                        <div class="vendor-name">Vineyard Estate <i class="fas fa-check-circle"></i></div>
+                                        <div class="vendor-details">Scenic outdoor venue with vineyard views, indoor backup</div>
+                                        <div class="vendor-rating">★★★★★ (4.8/5)</div>
+                                        <div class="vendor-pricing">Starting at <strong>$5,000</strong></div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-tier premium-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Premium Venues</span>
+                                    <span class="tier-price">($7,000+)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="venue_vendor" value="luxury_resort">
+                                        <div class="vendor-name">Luxury Beach Resort <i class="fas fa-check-circle"></i></div>
+                                        <div class="vendor-details">Exclusive beachfront property, full staff, premium amenities</div>
+                                        <div class="vendor-rating">★★★★★ (4.9/5)</div>
+                                        <div class="vendor-pricing">Starting at <strong>$8,000</strong></div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="venue_vendor" value="historic_mansion">
+                                        <div class="vendor-name">Historic Grand Mansion <i class="fas fa-check-circle"></i></div>
+                                        <div class="vendor-details">Luxurious historic property, gardens, ballroom, full staff</div>
+                                        <div class="vendor-rating">★★★★★ (5.0/5)</div>
+                                        <div class="vendor-pricing">Starting at <strong>$10,000</strong></div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="add-vendor-btn" onclick="showAddVendorModal('venue')">
+                                <i class="fas fa-plus"></i> Add Custom Venue
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Catering Service -->
+                    <div class="service-category">
+                        <div class="service-header" onclick="toggleService('catering')">
+                            <h3><i class="fas fa-utensils"></i> Catering</h3>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </div>
+                        <div class="service-content" id="catering-content">
+                            <div class="budget-tier basic-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Basic Catering</span>
+                                    <span class="tier-price">($15-$25 per person)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="catering_vendor" value="local_bites">
+                                        <div class="vendor-name">Local Bites Catering <i class="fas fa-check-circle"></i></div>
+                                        <div class="vendor-details">Buffet style with 3 main options, 2 sides, and dessert</div>
+                                        <div class="vendor-rating">★★★☆☆ (3.7/5)</div>
+                                        <div class="vendor-pricing"><strong>$15</strong> per person</div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="catering_vendor" value="family_kitchen">
+                                        <div class="vendor-name">Family Kitchen <i class="fas fa-check-circle"></i></div>
+                                        <div class="vendor-details">Homestyle meals with vegetarian option, buffet service</div>
+                                        <div class="vendor-rating">★★★★☆ (4.1/5)</div>
+                                        <div class="vendor-pricing"><strong>$20</strong> per person</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-tier standard-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Standard Catering</span>
+                                    <span class="tier-price">($25-$50 per person)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="catering_vendor" value="gourmet_chefs">
+                                        <div class="vendor-name">Gourmet Chefs Inc. <i class="fas fa-check-circle"></i></div>
+                                        <div class="vendor-details">Plated meals with 4-course options, professional waitstaff</div>
+                                        <div class="vendor-rating">★★★★☆ (4.5/5)</div>
+                                        <div class="vendor-pricing"><strong>$35</strong> per person</div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="catering_vendor" value="fusion_cuisine">
+                                        <div class="vendor-name">Fusion Cuisine <i class="fas fa-check-circle"></i></div>
+                                        <div class="vendor-details">International menu with premium buffet, chef stations</div>
+                                        <div class="vendor-rating">★★★★☆ (4.3/5)</div>
+                                        <div class="vendor-pricing"><strong>$45</strong> per person</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-tier premium-tier">
+                                <div class="tier-header">
+                                    <span class="tier-title">Premium Catering</span>
+                                    <span class="tier-price">($50+ per person)</span>
+                                </div>
+                                <div class="vendor-options">
+                                    <label class="vendor-card">
+                                        <input type="radio" name="catering_vendor" value="celebrity_cuisine">
+                                        <div class="vendor-name">Celebrity Cuisine <i class="fas fa-check-circle"></i></div>
+                                        <div class="vendor-details">Michelin-star inspired menu, personalized service</div>
+                                        <div class="vendor-rating">★★★★★ (4.9/5)</div>
+                                        <div class="vendor-pricing"><strong>$75</strong> per person</div>
+                                    </label>
+                                    <label class="vendor-card">
+                                        <input type="radio" name="catering_vendor" value="luxury_dining">
+                                        <div class="vendor-name">Luxury Dining Experience <i class="fas fa-check-circle"></i></div>
+                                        <div class="vendor-details">Custom menu with chef stations, premium bar service</div>
+                                        <div class="vendor-rating">★★★★★ (5.0/5)</div>
+                                        <div class="vendor-pricing"><strong>$100+</strong> per person</div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="add-vendor-btn" onclick="showAddVendorModal('catering')">
+                                <i class="fas fa-plus"></i> Add Custom Caterer
+                            </div>
+                        </

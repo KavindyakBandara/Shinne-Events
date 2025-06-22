@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Planning | Shine Event Planners</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 10;
+            box-sizing: border-box;
+            font-family: 'Playfair Display', serif;
+        }
+        body {
+            background-color: #f5f5f5;
+            color: #f6f1f1;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #e8e5e0;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #080808;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+        }
+        .back-btn {
+            padding: 12px 25px;
+            background: transparent;
+            color: #0e0d0d;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: 1px solid #1a1a19;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+        }
+        .back-btn:hover {
+            background: #60605f;
+            color: white;
+        }
+        .page-title {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #5a4a3a;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+        }
+        .page-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 2px;
+            background: #f8f6f4;
+            margin: 20px auto;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        .service-card {
+            background: rgba(221, 221, 219, 0.897);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+        
+        .service-box {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 2;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .service-image {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .service-content {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #5a4a3a;
+            font-weight: 500;
+        }
+
+        .service-description {
+            color: #7a6e62;
+            margin-bottom: 25px;
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        .select-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #3a3937;
+            color: rgb(249, 248, 244);
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            border: 1px solid #060606;
+        }
+
+        .select-btn:hover {
+            background: transparent;
+            color: #090909;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="logo">Shine Event Planners</a>
+            <a href="index.html" class="back-btn">
+                Back to Events
+            </a>
+        </header>
+        
+        <h1 class="page-title">Wedding Services</h1>
+        
+        <div class="services-grid">
+            <!-- Venue Service Card -->
+            <div class="service-card">
+                <img src="./Images/venue.wedding2 (1).jpg" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">Venue</h3>
+                    <p class="service-description">Discover breathtaking venues that will make your special day unforgettable, from rustic barns to elegant ballrooms.</p>
+                    <a href="venue-options.html" class="select-btn">
+                        Select
+                    </a>
+                </div>
+            </div>
+
+            <!-- Dressing Service Card -->
+            <div class="service-card">
+                <img src="./Images/Dressing & make up.jpg" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">Dressing & Makeup</h3>
+                    <p class="service-description">Exquisite wedding gowns and tailored suits to make you look stunning on your big day.</p>
+                    <a href="dressing-options.html" class="select-btn">
+                        Select
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Decorations Service Card -->
+            <div class="service-card">
+                <img src="./Images/wedding decors.jpg" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">Decorations</h3>
+                    <p class="service-description">Transform your venue with stunning floral arrangements and elegant decor that reflects your personal style.</p>
+                    <a href="FeshDecores.html" class="select-btn">
+                        Select
+                    </a>
+                </div>
+            </div>
+
+            <!-- Entertainment Service Card -->
+            <div class="service-card">
+                <img src="./Images/Wedding-Music-Band.jpg" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">Entertainment</h3>
+                    <p class="service-description">From string quartets to energetic DJs, we'll provide the perfect soundtrack for your celebration.</p>
+                    <a href="entertainment-options.html" class="select-btn">
+                        Select
+                    </a>
+                </div>
+            </div>
+
+            <!-- Photography & Videography Service Card -->
+            <div class="service-card">
+                <img src="./Images/wedding photgrapht.jpg" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">Photography & Videography</h3>
+                    <p class="service-description">Capture every moment with professional photos and cinematic films to relive your special day.</p>
+                    <a href="photography-options.html" class="select-btn">
+                        Select
+                    </a>
+                </div>
+            </div>
+
+            <!-- Invitations Service Card -->
+            <div class="service-card">
+                <img src="./Images/wedding invitation.jpg" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">Invitations</h3>
+                    <p class="service-description">Elegant, custom-designed stationery that sets the tone for your wedding celebration.</p>
+                    <a href="invitation-options.html" class="select-btn">
+                        Select
+                    </a>
+                </div>
+            </div>
+
+            <!-- Favors Service Card -->
+            <div class="service-card">
+                <img src="./Images/wedding cake.jpg" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">Cake Structures & Favors</h3>
+                    <p class="service-description">Thoughtful, personalized gifts that show your appreciation to your guests.</p>
+                    <a href="cake-options.html" class="select-btn">
+                        Select
+                    </a>
+                </div>
+            </div>
+
+            <!-- Customize Service Card -->
+            <div class="service-card">
+                <img src="./Images/wedding other sevices.jpg" class="service-image">
+                <div class="service-content">
+                    <h3 class="service-title">Customize</h3>
+                    <p class="service-description">Tailor every aspect of your wedding with our bespoke planning service for a truly unique celebration.</p>
+                    <a href="custom-options.html" class="select-btn">
+                        Select
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

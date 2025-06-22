@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Bliss</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .firm-name {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .slogan {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        a.event-card {
+            display: block;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+        }
+        a.event-card:hover {
+            transform: translateY(-10px);
+        }
+        .event-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+        .event-title {
+            font-size: 1.5rem;
+            padding: 20px;
+            color: #2c3e50;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="firm-name">Event Bliss</h1>
+            <p class="slogan">Creating unforgettable moments</p>
+        </header>
+        
+        <div class="event-grid">
+            <!-- TEST THESE WORKING LINKS -->
+            <a href="birthday.html" class="event-card">
+                <div class="event-image" style="background-image: url('https://source.unsplash.com/random/600x400/?birthday')"></div>
+                <h3 class="event-title">Birthday Parties</h3>
+            </a>
+            
+            <a href="wedding.html" class="event-card">
+                <div class="event-image" style="background-image: url('https://source.unsplash.com/random/600x400/?wedding')"></div>
+                <h3 class="event-title">Weddings</h3>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

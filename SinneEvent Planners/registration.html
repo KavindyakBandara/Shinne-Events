@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Premium Access</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #F4E5C2;
+            --black: #121212;
+            --dark-gray: #2A2A2A;
+            --medium-gray: #4A4A4A;
+            --light-gray: #E8E8E8;
+            --white: #FFFFFF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .register-container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: 1px solid var(--light-gray);
+        }
+        
+        .register-header {
+            background: var(--black);
+            color: var(--white);
+            padding: 32px;
+            text-align: center;
+            border-bottom: 4px solid var(--gold);
+        }
+        
+        .register-header h1 {
+            font-weight: 600;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .register-header p {
+            opacity: 0.8;
+            font-weight: 300;
+            font-size: 0.95rem;
+        }
+        
+        .register-form {
+            padding: 32px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark-gray);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--light-gray);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            background-color: var(--white);
+            color: var(--black);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px var(--gold-light);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 38px;
+            cursor: pointer;
+            color: var(--medium-gray);
+            font-size: 1.1rem;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: var(--black);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background: var(--dark-gray);
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .register-footer {
+            text-align: center;
+            margin-top: 24px;
+            color: var(--medium-gray);
+            font-size: 0.9rem;
+        }
+        
+        .register-footer a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .register-footer a:hover {
+            text-decoration: underline;
+            color: var(--black);
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: var(--medium-gray);
+            font-size: 0.8rem;
+        }
+        
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .divider::before {
+            margin-right: 16px;
+        }
+        
+        .divider::after {
+            margin-left: 16px;
+        }
+        
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            margin: 20px 0;
+            font-size: 0.85rem;
+            color: var(--medium-gray);
+        }
+        
+        .terms input {
+            margin-right: 10px;
+            margin-top: 3px;
+            accent-color: var(--gold);
+        }
+        
+        .name-fields {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .name-fields .form-group {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <h1>Create Account</h1>
+            <p>Join our premium community</p>
+        </div>
+        
+        <div class="register-form">
+            <form id="registerForm">
+                <div class="name-fields">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" class="form-control" placeholder="John" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" class="form-control" placeholder="Doe" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="your@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required minlength="8">
+                    <button type="button" class="password-toggle">👁</button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" class="form-control" placeholder="••••••••" required>
+                    <button type="button" class="password-toggle">👁</button>
+                </div>
+                
+                <div class="terms">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">CREATE ACCOUNT</button>
+                
+                <div class="register-footer">
+                    <p>Already have an account? <a href="login.html">Sign in</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Toggle password visibility
+        const passwordToggles = document.querySelectorAll('.password-toggle');
+        
+        passwordToggles.forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                const input = e.target.parentElement.querySelector('input');
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                e.target.textContent = type === 'password' ? '👁' : '👁';
+                e.target.style.color = type === 'password' ? 'var(--medium-gray)' : 'var(--gold)';
+            });
+        });
+
+        // Form validation
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if(password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            if(!document.getElementById('terms').checked) {
+                alert('You must agree to the terms and conditions');
+                return;
+            }
+            
+            // In a real app, you would send data to server here
+            alert('Registration successful! Redirecting...');
+            
+            // Redirect to login page after successful registration
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

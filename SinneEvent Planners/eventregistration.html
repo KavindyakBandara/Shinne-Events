@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration</title>
+    <style>
+        :root {
+            --black: #121212;
+            --dark-gray: #2a2a2a;
+            --medium-gray: #3d3d3d;
+            --light-gray: #e0e0e0;
+            --gold: #d4af37;
+            --gold-light: #f0e6c5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-gray);
+            color: var(--black);
+            padding: 20px;
+        }
+        
+        .admin-registration-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .admin-header {
+            background-color: var(--black);
+            color: var(--gold);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .admin-header h1 {
+            font-size: 2rem;
+        }
+        
+        .admin-form-container {
+            padding: 30px;
+        }
+        
+        .form-section-title {
+            color: var(--gold);
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 10px;
+            margin: 25px 0 20px;
+            font-size: 1.3rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+        
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: var(--light-gray);
+        }
+        
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px var(--gold-light);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--gold);
+            color: var(--black);
+        }
+        
+        .btn-primary:hover {
+            background-color: #c19b2c;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--medium-gray);
+            color: var(--medium-gray);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--medium-gray);
+            color: white;
+        }
+        
+        .status-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--gold);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .file-upload-preview {
+            max-width: 200px;
+            max-height: 200px;
+            display: none;
+        }
+        
+        .admin-alert {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .duration-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        
+        .agenda-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        
+        .agenda-item input {
+            flex: 1;
+        }
+        
+        .remove-agenda {
+            color: #ff4444;
+            cursor: pointer;
+        }
+        
+        .add-agenda-btn {
+            margin-top: 10px;
+        }
+        
+        .budget-input {
+            position: relative;
+        }
+        
+        .budget-input span {
+            position: absolute;
+            left: 12px;
+            top: 38px;
+            font-weight: bold;
+        }
+        
+        .budget-input input {
+            padding-left: 30px !important;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="admin-registration-container">
+        <div class="admin-header">
+            <h1><i class="fas fa-calendar-alt"></i> Event Registration</h1>
+        </div>
+        
+        <div id="alertBox" class="admin-alert">
+            <i class="fas fa-check-circle"></i> <span id="alertMessage"></span>
+        </div>
+        
+        <div class="admin-form-container">
+            <form id="adminEventForm" action="register_event.php" method="POST" enctype="multipart/form-data">
+                <h2 class="form-section-title">Event Information</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="eventID">Event ID *</label>
+                        <input type="text" id="eventID" name="eventID" required readonly value=>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventName">Event Name *</label>
+                        <input type="text" id="eventName" name="eventName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventType">Event Type *</label>
+                        <select id="eventType" name="eventType" required>
+                            <option value="">Select Type</option>
+                            <option value="Wedding">Wedding</option>
+                            <option value="Corporate">Corporate</option>
+                            <option value="Birthday">Birthday</option>
+                            <option value="Conference">Conference</option>
+                            <option value="Social">Social Gathering</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientName">Client Name *</label>
+                        <input type="text" id="clientName" name="clientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientEmail">Client Email *</label>
+                        <input type="email" id="clientEmail" name="clientEmail" required>
+                    </div>
+                </div>
+                
+                <h2 class="form-section-title">Event Schedule</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="startDate">Start Date & Time *</label>
+                        <input type="datetime-local" id="startDate" name="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">End Date & Time *</label>
+                        <input type="datetime-local" id="endDate" name="endDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Event Duration</label>
+                        <div class="duration-display" id="durationDisplay">
+                            Please select start and end times
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="form-section-title">Event Agenda</h2>
+                <div class="form-group">
+                    <div id="agendaContainer">
+                        <div class="agenda-item">
+                            <input type="time" name="agendaTime[]" placeholder="Time">
+                            <input type="text" name="agendaItem[]" placeholder="Agenda Item">
+                            <i class="fas fa-times remove-agenda"></i>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline add-agenda-btn" id="addAgendaBtn">
+                        <i class="fas fa-plus"></i> Add Agenda Item
+                    </button>
+                </div>
+                
+                <h2 class="form-section-title">Event Location</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="venueName">Venue Name *</label>
+                        <input type="text" id="venueName" name="venueName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="venueContact">Venue Contact Person</label>
+                        <input type="text" id="venueContact" name="venueContact">
+                    </div>
+                    <div class="form-group">
+                        <label for="venuePhone">Venue Phone</label>
+                        <input type="tel" id="venuePhone" name="venuePhone">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="venueAddress">Venue Address *</label>
+                    <textarea id="venueAddress" name="venueAddress" rows="2" required></textarea>
+                </div>
+                
+                <h2 class="form-section-title">Event Details</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="expectedGuests">Expected Number of Guests *</label>
+                        <input type="number" id="expectedGuests" name="expectedGuests" min="1" required>
+                    </div>
+                    <div class="form-group budget-input">
+                        <label for="budget">Estimated Budget (LKR)</label>
+                        <span>Rs.</span>
+                        <input type="number" id="budget" name="budget" placeholder="Amount in LKR">
+                    </div>
+                    <div class="form-group">
+                        <label for="theme">Event Theme</label>
+                        <input type="text" id="theme" name="theme">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="eventDescription">Event Description</label>
+                    <textarea id="eventDescription" name="eventDescription" rows="3" placeholder="Describe the event purpose and activities"></textarea>
+                </div>
+                
+                <h2 class="form-section-title">Vendors</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="caterer">Caterer</label>
+                        <input type="text" id="caterer" name="caterer">
+                    </div>
+                    <div class="form-group">
+                        <label for="decorator">Decorator</label>
+                        <input type="text" id="decorator" name="decorator">
+                    </div>
+                    <div class="form-group">
+                        <label for="entertainment">Entertainment</label>
+                        <input type="text" id="entertainment" name="entertainment">
+                    </div>
+                    <div class="form-group">
+                        <label for="photographer">Photographer</label>
+                        <input type="text" id="photographer" name="photographer">
+                    </div>
+                    <div class="form-group">
+                        <label for="videographer">Videographer</label>
+                        <input type="text" id="videographer" name="videographer">
+                    </div>
+                </div>
+                
+                <h2 class="form-section-title">Admin Controls</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="eventStatus">Event Status</label>
+                        <select id="eventStatus" name="eventStatus">
+                            <option value="Planning">Planning</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventManager">Event Manager</label>
+                        <input type="text" id="eventManager" name="eventManager">
+                    </div>
+                    <div class="form-group">
+                        <label for="priorityLevel">Priority Level</label>
+                        <select id="priorityLevel" name="priorityLevel">
+                            <option value="Standard">Standard</option>
+                            <option value="High">High</option>
+                            <option value="VIP">VIP</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="adminNotes">Admin Notes</label>
+                    <textarea id="adminNotes" name="adminNotes" rows="3" placeholder="Internal notes about this event"></textarea>
+                </div>
+                
+                <h2 class="form-section-title">Attachments</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="contractFile">Contract Document</label>
+                        <input type="file" id="contractFile" name="contractFile" accept=".pdf,.doc,.docx">
+                    </div>
+                    <div class="form-group">
+                        <label for="floorPlan">Floor Plan</label>
+                        <input type="file" id="floorPlan" name="floorPlan" accept=".pdf,.jpg,.png">
+                    </div>
+                    <div class="form-group">
+                        <label for="eventImage">Event Image</label>
+                        <div class="file-upload">
+                            <input type="file" id="eventImage" name="eventImage" accept=".jpg,.jpeg,.png">
+                            <img id="eventImagePreview" class="file-upload-preview" alt="Event image preview">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="saveDraftBtn">Save Draft</button>
+                    <button type="submit" class="btn btn-primary">Register Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Image preview
+        document.getElementById('eventImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('eventImagePreview');
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Calculate duration when dates change
+        document.getElementById('startDate').addEventListener('change', calculateDuration);
+        document.getElementById('endDate').addEventListener('change', calculateDuration);
+        
+        function calculateDuration() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            if (startDate && endDate) {
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                
+                if (end <= start) {
+                    document.getElementById('durationDisplay').textContent = "End time must be after start time";
+                    document.getElementById('durationDisplay').style.color = "red";
+                    return;
+                }
+                
+                const diffMs = end - start;
+                const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                const diffHrs = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                
+                let durationText = "";
+                if (diffDays > 0) durationText += `${diffDays} day${diffDays > 1 ? 's' : ''} `;
+                if (diffHrs > 0) durationText += `${diffHrs} hour${diffHrs > 1 ? 's' : ''} `;
+                if (diffMins > 0 && diffDays === 0) durationText += `${diffMins} minute${diffMins > 1 ? 's' : ''}`;
+                
+                document.getElementById('durationDisplay').textContent = durationText || "Less than 1 minute";
+                document.getElementById('durationDisplay').style.color = "";
+            }
+        }
+        
+        // Add agenda item functionality
+        document.getElementById('addAgendaBtn').addEventListener('click', function() {
+            const agendaContainer = document.getElementById('agendaContainer');
+            const newAgenda = document.createElement('div');
+            newAgenda.className = 'agenda-item';
+            newAgenda.innerHTML = `
+                <input type="time" name="agendaTime[]" placeholder="Time">
+                <input type="text" name="agendaItem[]" placeholder="Agenda Item">
+                <i class="fas fa-times remove-agenda"></i>
+            `;
+            agendaContainer.appendChild(newAgenda);
+            
+            // Add event listener to new remove button
+            newAgenda.querySelector('.remove-agenda').addEventListener('click', function() {
+                agendaContainer.removeChild(newAgenda);
+            });
+        });
+        
+        // Add event listeners to existing remove buttons
+        document.querySelectorAll('.remove-agenda').forEach(button => {
+            button.addEventListener('click', function() {
+                this.parentNode.parentNode.removeChild(this.parentNode);
+            });
+        });
+        
+        // Form submission
+        document.getElementById('adminEventForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showAlert('Event registration would be submitted in a real implementation', 'success');
+            // In a real app, this would submit to your backend
+        });
+        
+        // Save draft functionality
+        document.getElementById('saveDraftBtn').addEventListener('click', function() {
+            showAlert('Draft would be saved in a real implementation', 'success');
+            // In a real app, this would save as draft
+        });
+        
+        // Show alert message
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            alertBox.className = 'admin-alert alert-' + type;
+            alertMessage.textContent = message;
+            alertBox.style.display = 'flex';
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

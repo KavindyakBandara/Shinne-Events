@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Management</title>
+  <style>
+    :root {
+      --primary-black: #121212;
+      --secondary-black: #1e1e1e;
+      --dark-gray: #2d2d2d;
+      --medium-gray: #3d3d3d;
+      --light-gray: #4d4d4d;
+      --gold: #d4af37;
+      --light-gold: #f0e6d2;
+      --white: #f5f5f5;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--primary-black);
+      margin: 0;
+      padding: 40px;
+      color: var(--white);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      background: linear-gradient(135deg, var(--secondary-black) 0%, var(--dark-gray) 100%);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid var(--medium-gray);
+    }
+    
+    h2 {
+      margin-bottom: 25px;
+      color: var(--gold);
+      font-size: 28px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--medium-gray);
+    }
+    
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    
+    input[type="text"] {
+      padding: 12px 15px;
+      width: 300px;
+      border-radius: 6px;
+      border: 1px solid var(--medium-gray);
+      background-color: var(--dark-gray);
+      color: var(--white);
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+    }
+    
+    input[type="text"]::placeholder {
+      color: var(--light-gray);
+    }
+    
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+    }
+    
+    .btn-add {
+      background-color: var(--gold);
+      color: var(--primary-black);
+    }
+    
+    .btn-add:hover {
+      background-color: #e6c34d;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    }
+    
+    .btn-edit {
+      background-color: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      margin-right: 8px;
+    }
+    
+    .btn-edit:hover {
+      background-color: rgba(212, 175, 55, 0.1);
+    }
+    
+    .btn-delete {
+      background-color: transparent;
+      color: #ff6b81;
+      border: 1px solid #ff6b81;
+    }
+    
+    .btn-delete:hover {
+      background-color: rgba(255, 107, 129, 0.1);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--medium-gray);
+    }
+    
+    th {
+      background-color: var(--dark-gray);
+      color: var(--gold);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+    
+    td {
+      color: var(--white);
+      vertical-align: middle;
+    }
+    
+    tr:hover {
+      background-color: rgba(212, 175, 55, 0.03);
+    }
+    
+    .status {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .status-active {
+      background-color: rgba(46, 213, 115, 0.2);
+      color: #2ed573;
+    }
+    
+    .status-inactive {
+      background-color: rgba(255, 71, 87, 0.2);
+      color: #ff4757;
+    }
+    
+    .event-type {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    
+    .event-wedding {
+      background-color: rgba(156, 39, 176, 0.2);
+      color: #9c27b0;
+    }
+    
+    .event-corporate {
+      background-color: rgba(33, 150, 243, 0.2);
+      color: #2196f3;
+    }
+    
+    .event-birthday {
+      background-color: rgba(76, 175, 80, 0.2);
+      color: #4caf50;
+    }
+    
+    .event-other {
+      background-color: rgba(255, 152, 0, 0.2);
+      color: #ff9800;
+    }
+    
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 25px;
+      gap: 8px;
+    }
+    
+    .page-btn {
+      padding: 8px 14px;
+      background-color: var(--dark-gray);
+      color: var(--white);
+      border: 1px solid var(--medium-gray);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .page-btn:hover {
+      background-color: var(--medium-gray);
+    }
+    
+    .page-btn.active {
+      background-color: var(--gold);
+      color: var(--primary-black);
+      border-color: var(--gold);
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      
+      .top-bar {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+      }
+      
+      input[type="text"] {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Customer Management</h2>
+
+    <div class="top-bar">
+      <input type="text" placeholder="Search customer by name or email...">
+      <a href="customerregistratio.html">
+        <button class="btn-add">➕ Add Customer</button>
+      </a>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Event Type</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>John Smith</td>
+          <td>john.smith@example.com</td>
+          <td><span class="event-type event-wedding">Wedding</span></td>
+          <td><span class="status status-active">Active</span></td>
+          <td>
+            <button class="btn-edit">Edit</button>
+            <button class="btn-delete">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Sarah Johnson</td>
+          <td>sarah.j@example.com</td>
+          <td><span class="event-type event-corporate">Corporate</span></td>
+          <td><span class="status status-active">Active</span></td>
+          <td>
+            <button class="btn-edit">Edit</button>
+            <button class="btn-delete">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Michael Brown</td>
+          <td>michael.b@example.com</td>
+          <td><span class="event-type event-birthday">Birthday</span></td>
+          <td><span class="status status-inactive">Inactive</span></td>
+          <td>
+            <button class="btn-edit">Edit</button>
+            <button class="btn-delete">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Emily Davis</td>
+          <td>emily.d@example.com</td>
+          <td><span class="event-type event-other">Other</span></td>
+          <td><span class="status status-active">Active</span></td>
+          <td>
+            <button class="btn-edit">Edit</button>
+            <button class="btn-delete">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button class="page-btn">Previous</button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">Next</button>
+    </div>
+  </div>
+
+</body>
+</html>
